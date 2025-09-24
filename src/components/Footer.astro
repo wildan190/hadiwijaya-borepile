@@ -6,15 +6,15 @@ const socialLinks = [
   { name: 'Twitter', icon: 'fab fa-twitter', href: '#' },
 ];
 
-const quickLinks = [
+const navigationLinks = [
     { name: 'Beranda', href: '/' },
     { name: 'Tentang Kami', href: '/about' },
     { name: 'Kontak', href: '/contact' },
+    { name: 'Service', href: '/services/jasa-bore-pile' },
 ];
 
 const serviceLinks = [
     { name: 'Blog', href: '/blog' },
-    { name: 'Layanan', href: '/services/jasa-bore-pile' },
     { name: 'Privacy Policy', href: '/privacy-policy' },
     { name: 'Return & Refund Policy', href: '/return-policy' },
 ];
@@ -35,9 +35,9 @@ const serviceLinks = [
         </div>
 
         <div class="footer-links">
-            <h4>Tautan Cepat</h4>
+            <h4>Navigasi</h4>
             <ul>
-                {quickLinks.map(link => <li><a href={link.href}>{link.name}</a></li>)}
+                {navigationLinks.map(link => <li><a href={link.href}>{link.name}</a></li>)}
             </ul>
         </div>
 

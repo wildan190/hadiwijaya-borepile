@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+interface Project {
+  title: string;
+  description: string;
+  image: string;
+}
+
+const API_BASE_URL = import.meta.env.API_URL;
+let projects: Project[] = [];
+
+try {
+  if (API_BASE_URL) {
+    const apiUrl = `${API_BASE_URL}/api/v2/projects`;
+    const response = await fetch(apiUrl, { cache: 'no-store' });
+
+    if (response.ok) {
+      const apiProjects: any[] = await response.json();
+      if (Array.isArray(apiProjects)) {
+        projects = apiProjects.map((project: any): Project => ({
+          title: project.title,
+          description: `Lokasi: ${project.location}.`,
+          image: `${API_BASE_URL}/storage/${project.picture_upload}`
+        }));
+      }
+    }
+  }
+} catch (error) {
+  console.error("[Portfolio Page] Gagal fetch data: ", error);
+}
+---
+
+<Layout 
+  title="Portofolio Proyek | Hadiwijaya Pondasi Persada"
+  description="Lihat koleksi proyek bore pile dan pondasi yang telah berhasil kami kerjakan di berbagai lokasi. Portofolio kami mencakup proyek skala kecil hingga besar."
+  keywords={["portofolio bore pile", "proyek pondasi", "studi kasus konstruksi", "proyek hadiwiaya"]}
+>
+  <section class="portfolio-page-section">
+    <div class="container">
+      <h1 class="page-title">Portofolio Proyek</h1>
+      <p class="page-intro">Berikut adalah sebagian dari proyek-proyek yang telah kami selesaikan dengan sukses, menunjukkan keahlian dan komitmen kami terhadap kualitas.</p>
+
+      <div class="portfolio-grid stagger-children">
+        {projects.map((project) => (
+          <div class="portfolio-card">
+            <a
+              href={project.image}
+              class="card-image-wrapper"
+              data-fancybox="portfolio-page"
+              data-caption={`<h3>${project.title}</h3><p>${project.description}</p>`}
+            >
+              <img src={project.image} alt={project.title} loading="lazy" />
+            </a>
+            <div class="card-content">
+              <h3>{project.title}</h3>
+              <p>{project.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .portfolio-page-section {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+  .page-title { font-size: 2.8rem; color: var(--secondary-color); text-align: center; margin-bottom: 1rem; }
+  .page-intro { text-align: center; max-width: 700px; margin: 0 auto 3rem; color: #555; font-size: 1.1rem; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+  .portfolio-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); text-align: left; display: flex; flex-direction: column; }
+  .card-image-wrapper { width: 100%; padding-top: 133.33%; position: relative; display: block; border-radius: 12px 12px 0 0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .card-image-wrapper:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12); }
+  .portfolio-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+  .card-content { padding: 1.5rem; flex-grow: 1; }
+  h3 { margin-top: 0; font-size: 1.25rem; color: var(--secondary-color); margin-bottom: 0.5rem; }
+  p { font-size: 0.95rem; color: #666; line-height: 1.6; }
+  
+  @media (max-width: 768px) {
+    .portfolio-page-section {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    .page-title { font-size: 2.2rem; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+  }
+</style>
