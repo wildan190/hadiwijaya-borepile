@@ -1,0 +1,11 @@
+[debug] [2025-09-24T10:10:51.415Z] ----------------------------------------------------------------------
+[debug] [2025-09-24T10:10:51.418Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/a3jfkfzmr1h8lmk31a8fbchkg5sp12q9-firebase-tools-14.16.0/lib/node_modules/firebase-tools/lib/bin/firebase.js hosting:channel:deploy stg
+[debug] [2025-09-24T10:10:51.419Z] CLI Version:   14.16.0
+[debug] [2025-09-24T10:10:51.420Z] Platform:      linux
+[debug] [2025-09-24T10:10:51.420Z] Node Version:  v20.19.1
+[debug] [2025-09-24T10:10:51.420Z] Time:          Wed Sep 24 2025 10:10:51 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-09-24T10:10:51.420Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-24T10:10:52.018Z] Checked if tokens are valid: true, expires at: 1758711030903
+[debug] [2025-09-24T10:10:52.018Z] Checked if tokens are valid: true, expires at: 1758711030903
+[debug] [2025-09-24T10:10:52.023Z] >>> [apiv2][query] GET https://monospace-pa.googleapis.com/v1/workspaces/hadiwijaya-borepile-37062310 [none]
