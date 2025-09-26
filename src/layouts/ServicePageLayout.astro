@@ -103,7 +103,7 @@ const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a pat
     }
     .product-grid { 
       display: grid; 
-      grid-template-columns: 1fr 1.5fr; /* Two columns */
+      grid-template-columns: 380px 1fr; /* Adjusted for portrait image */
       gap: 4rem; 
       align-items: center; 
     }
@@ -113,7 +113,9 @@ const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a pat
       display: flex; 
       align-items: center; 
       justify-content: center; 
-      height: 400px; /* Use fixed height */
+      width: 350px;
+      aspect-ratio: 9 / 14;
+      margin: 0 auto;
       box-shadow: 0 10px 30px rgba(0,0,0,0.07);
       overflow: hidden; 
     }
@@ -196,20 +198,20 @@ const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a pat
     .process-infographic h4 { font-size: 1.2rem; color: var(--secondary-color); margin: 0 0 0.5rem; }
     .process-infographic p { font-size: 1rem; color: #555; margin: 0; }
 
-    /* 4. Mini Gallery - PERUBAHAN */
+    /* 4. Mini Gallery */
     .gallery {
       background-color: var(--background-color);
     }
     .gallery-grid { 
       display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* DIUBAH: Ukuran minimum lebih besar */
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 1.5rem; 
     }
     .gallery-item {
       background-color: #fff;
       border-radius: 12px;
       overflow: hidden;
-      aspect-ratio: 3 / 4; /* Rasio potrait */
+      aspect-ratio: 3 / 4; /* Portrait ratio */
       box-shadow: 0 8px 15px rgba(0,0,0,0.07);
       transition: all 0.3s ease;
     }
@@ -250,9 +252,14 @@ const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a pat
     /* Responsive */
     @media (max-width: 992px) {
       .product-grid { grid-template-columns: 1fr; }
-      .product-image { height: auto; min-height: 250px; margin-bottom: 2rem; }
+      .product-image { 
+        height: auto; 
+        width: 100%;
+        max-width: 350px; /* Limit max width on mobile too */
+        margin-bottom: 2rem; 
+        aspect-ratio: 9 / 12; /* Adjust ratio for mobile if needed */
+      }
       .product-image i { font-size: 10rem; }
-      .product-image img.service-icon-image { max-height: 250px; width: auto; }
       .product-details .title { font-size: 2.5rem; }
     }
     @media (max-width: 768px) {
@@ -261,7 +268,7 @@ const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a pat
       h2 { font-size: 2.2rem; }
       .product-details .price { font-size: 2rem; }
       .gallery-grid { 
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Kembali ke ukuran lebih kecil di mobile */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       }
     }
   </style>
