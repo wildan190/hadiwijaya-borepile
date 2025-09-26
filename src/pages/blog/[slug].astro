@@ -45,7 +45,6 @@ try {
     fetch(allPostsEndpoint)
   ]);
 
-  // Pemeriksaan yang benar: pastikan KEDUA request berhasil
   if (!singlePostRes.ok || !allPostsRes.ok) {
     throw new Error('Gagal mengambil data blog.');
   }
@@ -53,13 +52,11 @@ try {
   const singleJson = await singlePostRes.json();
   const allJson = await allPostsRes.json();
 
-  // Logika parsing yang aman, seperti kode lama Anda
   blogPost = singleJson.data || singleJson;
   allPostsData = allJson.data || allJson || [];
 
 } catch (error) {
   console.error("Error fetching blog data:", error);
-  // Jika ada kesalahan (termasuk fetch atau parsing), redirect ke 404
   return Astro.redirect('/404');
 }
 
@@ -67,7 +64,7 @@ if (!blogPost || !Array.isArray(allPostsData)) {
   return Astro.redirect('/404');
 }
 
-// --- 3. LOGIKA REKOMENDASI (SAMA SEPERTI SEBELUMNYA) ---
+// --- 3. LOGIKA REKOMENDASI ---
 const otherPosts = allPostsData.filter(p => p.slug !== slug);
 let readAlsoPost = null;
 if (otherPosts.length > 0) {
@@ -86,7 +83,7 @@ if (paragraphs.length > 3) {
   contentPart2 = paragraphs.slice(2).join('</p>');
 }
 
-// --- 4. PERSIAPAN VARIABEL (SAMA SEPERTI SEBELUMNYA) ---
+// --- 4. PERSIAPAN VARIABEL ---
 const { title, excerpt, tags, date, category, headline_img } = blogPost;
 const fullImageUrl = `${API_URL}${headline_img}`;
 const pageTitle = `${title} | Blog Hadiwijaya`;
@@ -104,13 +101,10 @@ const enhancedKeywords = [...new Set([...(tags || []), category, title, "Hadiwij
     <div class="container">
       <article>
         <div class="article-meta">
-          <!-- <span><Icon name="mdi:calendar" class="icon" /> {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span> -->
           <span><Icon name="mdi:tag" class="icon" /> {category}</span>
         </div>
 
         <img class="featured-image" src={fullImageUrl} alt={title} />
-
-        <ShareButtons title={title} />
 
         <div class="prose max-w-none" set:html={contentPart1} />
 
@@ -118,6 +112,10 @@ const enhancedKeywords = [...new Set([...(tags || []), category, title, "Hadiwij
 
         {contentPart2 && <div class="prose max-w-none" set:html={contentPart2} />}
         
+        <div class="bottom-share-buttons">
+          <p class="share-title">Bagikan Artikel Ini</p>
+          <ShareButtons title={title} />
+        </div>
       </article>
     </div>
   </section>
@@ -137,7 +135,22 @@ const enhancedKeywords = [...new Set([...(tags || []), category, title, "Hadiwij
   .article-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 2rem; color: #555; font-size: 1rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #eee; }
   .article-meta span { display: flex; align-items: center; gap: 0.5rem; }
   .article-meta .icon { width: 1.2rem; height: 1.2rem; color: var(--primary-color); }
-  .featured-image { width: 100%; height: auto; max-height: 450px; object-fit: cover; border-radius: 12px; margin-bottom: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+  .featured-image { width: 100%; height: auto; max-height: 450px; object-fit: cover; border-radius: 12px; margin-bottom: 2.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
   
-  @media (max-width: 768px) { .page-header h1 { font-size: 2.2rem; } }
+  .bottom-share-buttons {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+    text-align: center;
+  }
+  .share-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 768px) { 
+    .page-header h1 { font-size: 2.2rem; } 
+  }
 </style>
