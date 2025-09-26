@@ -1,9 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// --- SEO & Schema ---
+
 const title = "Tentang Kami | Hadiwijaya Bore Pile";
 const description = "Kenali lebih dalam tentang Hadiwijaya Bore Pile. Visi, misi, dan tim ahli di balik kesuksesan proyek pondasi bore pile di seluruh Indonesia.";
-const keywords = [
+
+// WebPage Schema
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": title,
+  "description": description,
+  "url": Astro.url.href,
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Beranda", "item": Astro.url.origin },
+      { "@type": "ListItem", "position": 2, "name": "Tentang Kami", "item": Astro.url.href }
+    ]
+  }
+};
+
+// Combined Keywords
+const existingKeywords = [
   "profil perusahaan Hadiwijaya Bore Pile",
   "kontraktor bore pile terpercaya",
   "spesialis pondasi Indonesia",
@@ -16,9 +36,30 @@ const keywords = [
   "sejarah perusahaan pondasi",
   "keselamatan kerja proyek pondasi"
 ];
+
+const newKeywords = [
+  "bore pile adalah", "bore pile jakarta", "bore pile pondasi", "harga bore pile", 
+  "harga bore pile diameter 40 cm", "harga jasa bore pile", "harga jasa bore pile per meter", 
+  "jasa bore pile jakarta", "jasa bore pile manual", "jasa bore pile murah", 
+  "jasa bore pile semarang", "jasa bore pile strauss pile", "jasa bore pile tangerang", 
+  "jasa strauss pile", "jasa strauss pile jakarta", "pondasi strauss pile",
+  "harga bore pile diameter 30 cm", "harga bore pile per meter", "jasa bor pile manual", 
+  "harga bor pile per titik", "harga bore pile per titik", "harga borongan bore pile", 
+  "harga bore pile diameter 80 cm", "alat bore pile", "ukuran bore pile", 
+  "bored pile pondasi", "pile boring machine", "alat bore pile manual", "casing bore pile", 
+  "detail pondasi bore pile", "mesin bore pile", "pondasi bore pile adalah", 
+  "ukuran pondasi bore pile", "gambar pondasi bore pile", "apa itu bore pile", 
+  "bore pile surabaya", "pekerjaan bore pile", "denah pondasi bore pile", 
+  "detail bore pile", "jasa bore pile bogor"
+];
+
+const keywords = [...new Set([...existingKeywords, ...newKeywords])];
 ---
 
 <Layout title={title} description={description} keywords={keywords}>
+
+    <!-- WebPage Schema Injection -->
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify(webPageSchema)} />
 
     <section class="page-hero">
         <div class="container">
@@ -65,7 +106,7 @@ const keywords = [
           </div>
         </section>
 
-        <!-- PERUBAHAN: Founder Author BOX Section -->
+        <!-- Founder Author BOX Section -->
         <section class="founder-section">
             <div class="container">
                 <div class="founder-box">
@@ -124,7 +165,7 @@ const keywords = [
     .vm-card ul { padding-left: 1.5rem; }
     .vm-card li { margin-bottom: 0.5rem; }
 
-    /* PERUBAHAN: Founder Author Box Styles */
+    /* Founder Author Box Styles */
     .founder-section {
         padding: 4rem 2rem 6rem 2rem;
         background-color: white;

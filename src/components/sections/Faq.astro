@@ -1,54 +1,58 @@
 ---
-const API_BASE_URL = import.meta.env.API_URL;
+// This component can now accept FAQs as a prop.
+const { faqs: passedFaqs } = Astro.props;
 
-let faqs = [];
+let faqs = passedFaqs || [];
 
-if (API_BASE_URL) {
-  try {
-    const apiUrl = `${API_BASE_URL}/api/v2/faqs`;
-    const response = await fetch(apiUrl, { cache: 'no-store' });
+// The API call is kept as a fallback for other pages that might use it.
+if (faqs.length === 0) {
+  const API_BASE_URL = import.meta.env.API_URL;
+  if (API_BASE_URL) {
+    try {
+      const apiUrl = `${API_BASE_URL}/api/v2/faqs`;
+      const response = await fetch(apiUrl, { cache: 'no-store' });
 
-    if (response.ok) {
-      const apiFaqs = await response.json();
-      if (Array.isArray(apiFaqs) && apiFaqs.length > 0) {
-        faqs = apiFaqs;
+      if (response.ok) {
+        const apiFaqs = await response.json();
+        if (Array.isArray(apiFaqs)) {
+          faqs = apiFaqs;
+        }
+      } else {
+        console.error(`[Faq Component] API request failed: ${response.status}.`);
       }
-    } else {
-      console.error(`[Faq Component] API request failed: ${response.status}. Section will be empty.`);
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("[Faq Component] Gagal fetch data FAQ: " + error.message + ". Section will be empty.");
-    } else {
-      console.error("[Faq Component] Terjadi error tidak diketahui. Section will be empty.", error);
+    } catch (error) {
+       console.error("[Faq Component] Gagal fetch data FAQ: " + (error instanceof Error ? error.message : String(error)));
     }
   }
 }
 ---
 
-<section id="faq" class="faq-section">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      <p class="section-subtitle">Menemukan jawaban cepat untuk pertanyaan umum tentang layanan kami.</p>
+{faqs && faqs.length > 0 && (
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Menemukan jawaban cepat untuk pertanyaan umum tentang layanan kami.</p>
+      </div>
+      <div class="faq-accordion">
+        {faqs.map((faq, index) => (
+          <details class="faq-item" data-aos="fade-up" data-aos-delay={index * 100}>
+            <summary class="faq-question">
+              <span>{faq.question}</span>
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </summary>
+            <div class="faq-answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
     </div>
-    <div class="faq-accordion">
-      {faqs.map((faq, index) => (
-        <details class="faq-item" data-aos="fade-up" data-aos-delay={index * 100}>
-          <summary class="faq-question">
-            <span>{faq.question}</span>
-            <i class="fas fa-chevron-down faq-icon"></i>
-          </summary>
-          <div class="faq-answer">
-            <p>{faq.answer}</p>
-          </div>
-        </details>
-      ))}
-    </div>
-  </div>
-</section>
+  </section>
+)}
 
 <style>
+  /* Styles remain unchanged */
   .faq-section { padding: 80px 0; background-color: #f8f9fa; }
   .section-header { text-align: center; margin-bottom: 50px; }
   .section-title { font-size: 2.5rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 10px; }

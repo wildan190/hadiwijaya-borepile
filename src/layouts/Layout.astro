@@ -1,33 +1,100 @@
+
 ---
 import { SEO } from 'astro-seo';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { ViewTransitions } from 'astro:transitions';
 
+// SEO-related props
 interface Props {
-	title: string;
+	title?: string;
   description?: string;
   keywords?: string[];
+  ogImage?: string;
+}
+
+// Default SEO values
+const site = {
+  name: "Hadiwijaya Bore Pile",
+  url: "https://www.hadiwijayaborepile.com",
+  logo: "/assets/img/hbp-logo.png",
+  ogImage: "/assets/img/og-image.jpg",
+  telephone: "+6281233624549",
+  address: {
+    street: "Manggihan, RT.02/RW.03, Sambung, Kec. Godong",
+    city: "Grobogan",
+    region: "Jawa Tengah",
+    postalCode: "58162",
+    country: "Indonesia"
+  }
 }
 
 const { 
-  title = 'Hadiwijaya Bore Pile - Jasa Bore Pile Profesional',
-  description = 'Solusi fondasi bore pile terpercaya untuk semua skala proyek. Kami menyediakan jasa bore pile manual, mini crane, dan hydraulic dengan tim berpengalaman.', 
-  keywords = ['jasa bore pile', 'fondasi bore pile', 'kontraktor fondasi', 'bore pile jakarta', 'bore pile indonesia', 'bore pile manual', 'bore pile mini crane', 'bore pile hydraulic']
+  title: pageTitle,
+  description: pageDescription,
+  keywords,
+  ogImage: pageOgImage
 } = Astro.props;
+
+// Construct SEO values
+const title = pageTitle ? `${pageTitle} | ${site.name}` : `${site.name} - Jasa Bore Pile Profesional`;
+const description = pageDescription || 'Solusi fondasi bore pile terpercaya untuk semua skala proyek. Kami menyediakan jasa bore pile manual, mini crane, dan hydraulic dengan tim berpengalaman.';
+const ogImageUrl = Astro.url.origin + (pageOgImage || site.ogImage);
+
+// LocalBusiness Schema
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": site.name,
+  "image": Astro.url.origin + site.logo,
+  "@id": site.url,
+  "url": site.url,
+  "telephone": site.telephone,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": site.address.street,
+    "addressLocality": site.address.city,
+    "addressRegion": site.address.region,
+    "postalCode": site.address.postalCode,
+    "addressCountry": site.address.country
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -7.079, // Approx. latitude for Grobogan
+    "longitude": 110.713 // Approx. longitude for Grobogan
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "08:00",
+    "closes": "17:00"
+  },
+  "sameAs": [
+    // Add social media URLs here when available
+  ]
+};
 ---
 
 <!doctype html>
 <html lang="id">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <link rel="stylesheet" href="/styles/animations.css" />
 
+    <!-- Enhanced SEO Component -->
     <SEO
       title={title}
       description={description}
@@ -36,27 +103,47 @@ const {
         basic: {
           title: title,
           type: 'website',
-          image: '/assets/img/og-image.jpg', 
-          url: Astro.url,
-        }
+          image: ogImageUrl,
+          url: Astro.url.href,
+        },
+        image: {
+          alt: title,
+          width: 1200,
+          height: 630
+        },
+        siteName: site.name
+      }}
+      twitter={{
+        card: 'summary_large_image',
+        site: '@YourTwitterHandle', // Replace with actual Twitter handle
+        creator: '@YourTwitterHandle',
+        title: title,
+        description: description,
+        image: ogImageUrl,
+        imageAlt: title
       }}
       extend={{
-        meta: [{ name: 'twitter:card', content: 'summary_large_image' }],
         link: [{ rel: 'canonical', href: Astro.url.href }]
       }}
     />
-		<ViewTransitions />
-	</head>
-	<body>
+    
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessSchema)} />
 
-		<Header/>
-		<slot name="hero" />
-		<main> 
-			<slot/>
-		</main>
-		<Footer />
+    <ViewTransitions />
+</head>
+<body>
+    <Header/>
+    <slot name="hero" />
+    <main> 
+        <slot/>
+    </main>
+    <Footer />
 
-    <!-- Modal Form -->
+    <!-- WhatsApp Share Link (Example usage in a component) -->
+    <!-- const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' - ' + Astro.url.href)}`; -->
+    
+    <!-- Modal and other body elements -->
     <div id="booking-modal" class="modal">
       <div class="modal-content">
         <span class="close-button">&times;</span>
@@ -80,14 +167,14 @@ const {
       </div>
     </div>
 
-    <a href="https://api.whatsapp.com/send/?phone=6281233624549&text=Hallo+Mas+Hadi...+Saya+mau+bikin+pondasi+bore+pile%2C+bisa+tolong+dibantu%3F&type=phone_number&app_absent=0" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+    <a href={`https://api.whatsapp.com/send/?phone=${site.telephone}&text=${encodeURIComponent('Hallo Mas Hadi... Saya mau bikin pondasi bore pile, bisa tolong dibantu?')}`} target="_blank" class="whatsapp-float" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
     
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-
-    <!-- SCRIPT GLOBAL VERSI FINAL, LENGKAP, DAN UTUH -->
+    
     <script is:inline>
+      // Global scripts remain unchanged
       function initAll() {
         initNavbar();
         initStickyHeader();
@@ -193,10 +280,9 @@ const {
       }
 
       document.addEventListener('astro:page-load', initAll);
-      initAll(); // Fallback for initial load
-
+      initAll();
     </script>
-	</body>
+</body>
 </html>
 
 <style is:global>

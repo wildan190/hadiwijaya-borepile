@@ -4,7 +4,7 @@ import ServicePageLayout from '../../layouts/ServicePageLayout.astro';
 const page = {
   title: "Jasa Bore Pile Mini Crane",
   subtitle: "Fleksibilitas tinggi untuk area terbatas dengan kekuatan pondasi yang andal.",
-  mainIcon: "/assets/img/gallery/1.jpg", // Correct path to the image in the public directory
+  mainIcon: "/assets/img/gallery/1.jpg", 
   price: "Rp140.000 / m¹",
   key_features: [
     {
@@ -39,11 +39,31 @@ const page = {
   ]
 };
 
+// SEO and Keywords
 const seo = {
   title: "Jasa Bore Pile Mini Crane | Solusi Pondasi Lahan Sempit | Hadiwijaya",
   description: "Hadiwijaya Pondasi Persada menyediakan jasa bore pile mini crane, solusi efektif untuk pondasi di lokasi terbatas seperti ruko, perumahan, dan gudang. Menjamin kekuatan untuk bangunan 2-5 lantai dengan getaran minim. Dapatkan harga terbaik.",
-  keywords: ["jasa bore pile mini crane", "harga bore pile mini crane", "pondasi lahan sempit", "bore pile ruko", "bore pile perumahan", "bore pile mesin", "jasa pondasi mesin tripod", "pondasi minim getaran", "bore pile untuk gudang"]
 };
+
+const existingKeywords = ["jasa bore pile mini crane", "harga bore pile mini crane", "pondasi lahan sempit", "bore pile ruko", "bore pile perumahan", "bore pile mesin", "jasa pondasi mesin tripod", "pondasi minim getaran", "bore pile untuk gudang"];
+
+const newKeywords = [
+  "bore pile adalah", "bore pile jakarta", "bore pile pondasi", "harga bore pile", 
+  "harga bore pile diameter 40 cm", "harga jasa bore pile", "harga jasa bore pile per meter", 
+  "jasa bore pile jakarta", "jasa bore pile manual", "jasa bore pile murah", 
+  "jasa bore pile semarang", "jasa bore pile strauss pile", "jasa bore pile tangerang", 
+  "jasa strauss pile", "jasa strauss pile jakarta", "pondasi strauss pile",
+  "harga bore pile diameter 30 cm", "harga bore pile per meter", "jasa bor pile manual", 
+  "harga bor pile per titik", "harga bore pile per titik", "harga borongan bore pile", 
+  "harga bore pile diameter 80 cm", "alat bore pile", "ukuran bore pile", 
+  "bored pile pondasi", "pile boring machine", "alat bore pile manual", "casing bore pile", 
+  "detail pondasi bore pile", "mesin bore pile", "pondasi bore pile adalah", 
+  "ukuran pondasi bore pile", "gambar pondasi bore pile", "apa itu bore pile", 
+  "bore pile surabaya", "pekerjaan bore pile", "denah pondasi bore pile", 
+  "detail bore pile", "jasa bore pile bogor"
+];
+
+const keywords = [...new Set([...existingKeywords, ...newKeywords])];
 
 const contentHtml = `
   <h2>Deskripsi Layanan</h2>
@@ -67,6 +87,6 @@ const contentHtml = `
   frontmatter={page} 
   title={seo.title} 
   description={seo.description} 
-  keywords={seo.keywords}
+  keywords={keywords}
   contentHtml={contentHtml}
 />

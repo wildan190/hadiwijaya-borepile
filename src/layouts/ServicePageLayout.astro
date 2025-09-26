@@ -2,13 +2,36 @@
 import Layout from './Layout.astro';
 const { frontmatter, title, description, keywords, contentHtml } = Astro.props;
 
-const price = frontmatter.price;
 const serviceName = frontmatter.title;
 const mainIcon = frontmatter.mainIcon;
-const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a path
+const isImageIcon = mainIcon && mainIcon.startsWith('/');
+
+// Service Schema Definition
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": serviceName,
+  "name": serviceName,
+  "description": description,
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "Hadiwijaya Bore Pile",
+     "url": "https://www.hadiwijayaborepile.com"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Indonesia"
+  },
+  "image": Astro.url.origin + mainIcon,
+  "url": Astro.url.href
+};
 ---
 
-<Layout title={title} description={description} keywords={keywords}>
+<Layout title={title} description={description} keywords={keywords} ogImage={mainIcon}>
+  
+  <!-- Service JSON-LD Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} slot="head" />
+
   <article class="service-page">
 
     <!-- 1. Product-style Hero Section -->
@@ -25,7 +48,7 @@ const isImageIcon = mainIcon && mainIcon.startsWith('/'); // Check if it's a pat
           <h1 class="title">{frontmatter.title}</h1>
           <p class="subtitle">{frontmatter.subtitle}</p>
           
-          {price && <div class="price">{price}</div>}
+          {frontmatter.price && <div class="price">{frontmatter.price}</div>}
 
           <div class="key-features-list">
             <h4>Keunggulan Utama:</h4>

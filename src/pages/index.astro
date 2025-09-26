@@ -10,11 +10,49 @@ import WhyUs from "../components/sections/WhyUs.astro";
 import Faq from "../components/sections/Faq.astro";
 import GetInTouch from "../components/sections/GetInTouch.astro";
 
+// --- SEO & Schema --- 
+
 const title =
   "Jasa Bore Pile Profesional & Terpercaya | Hadiwijaya Pondasi Persada";
 const description =
   "Hadiwijaya Pondasi Persada adalah kontraktor spesialis jasa bore pile di Indonesia. Kami menawarkan solusi pondasi bore pile manual, mini crane, hingga hydraulic dengan harga kompetitif. Melayani pondasi strauss pile untuk semua skala proyek.";
-const keywords = [
+
+// Static FAQ data for Schema
+const faqs = [
+  {
+    question: "Apa itu pondasi bore pile?",
+    answer: "Pondasi bore pile adalah jenis pondasi dalam yang berbentuk tabung, berfungsi untuk menyalurkan beban bangunan ke lapisan tanah yang lebih keras. Metode ini ideal untuk struktur bangunan di atas tanah yang kurang stabil."
+  },
+  {
+    question: "Berapa harga jasa bore pile?",
+    answer: "Harga jasa bore pile sangat bervariasi tergantung pada diameter, kedalaman, lokasi proyek, dan metode yang digunakan (manual, mini crane, atau hydraulic). Untuk mendapatkan estimasi harga yang akurat, silakan hubungi tim kami untuk konsultasi dan survei gratis."
+  },
+  {
+    question: "Metode bore pile apa yang cocok untuk proyek saya?",
+    answer: "Pemilihan metode tergantung pada skala proyek, akses lokasi, dan kondisi tanah. Bore pile manual (strauss pile) cocok untuk proyek kecil dengan akses terbatas. Mini crane efisien untuk proyek sedang, sedangkan hydraulic digunakan untuk proyek skala besar yang membutuhkan kedalaman dan kecepatan tinggi."
+  },
+  {
+    question: "Area mana saja yang dilayani oleh Hadiwijaya Bore Pile?",
+    answer: "Kami melayani jasa bore pile di seluruh wilayah Indonesia, dengan fokus utama di kota-kota besar seperti Jakarta, Semarang, Surabaya, Tangerang, dan Bogor. Kami siap mengerjakan proyek di mana pun lokasi Anda."
+  }
+];
+
+// FAQPage Schema
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+};
+
+// Combined Keywords
+const existingKeywords = [
   "jasa bore pile",
   "kontraktor bore pile terpercaya",
   "harga jasa bore pile per meter",
@@ -37,9 +75,31 @@ const keywords = [
   "jasa bore pile Yogyakarta",
   "jasa bore pile Solo"
 ];
+
+const newKeywords = [
+  "bore pile adalah", "bore pile jakarta", "bore pile pondasi", "harga bore pile", 
+  "harga bore pile diameter 40 cm", "harga jasa bore pile", "harga jasa bore pile per meter", 
+  "jasa bore pile jakarta", "jasa bore pile manual", "jasa bore pile murah", 
+  "jasa bore pile semarang", "jasa bore pile strauss pile", "jasa bore pile tangerang", 
+  "jasa strauss pile", "jasa strauss pile jakarta", "pondasi strauss pile",
+  "harga bore pile diameter 30 cm", "harga bore pile per meter", "jasa bor pile manual", 
+  "harga bor pile per titik", "harga bore pile per titik", "harga borongan bore pile", 
+  "harga bore pile diameter 80 cm", "alat bore pile", "ukuran bore pile", 
+  "bored pile pondasi", "pile boring machine", "alat bore pile manual", "casing bore pile", 
+  "detail pondasi bore pile", "mesin bore pile", "pondasi bore pile adalah", 
+  "ukuran pondasi bore pile", "gambar pondasi bore pile", "apa itu bore pile", 
+  "bore pile surabaya", "pekerjaan bore pile", "denah pondasi bore pile", 
+  "detail bore pile", "jasa bore pile bogor"
+];
+
+const keywords = [...new Set([...existingKeywords, ...newKeywords])];
 ---
 
 <Layout title={title} description={description} keywords={keywords}>
+  
+  <!-- FAQ Schema Injection -->
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
   <Hero slot="hero" />
   <VisualFeature />
   <Portfolio />
@@ -47,6 +107,6 @@ const keywords = [
   <Planning />
   <PriceTable />
   <WhyUs />
-  <Faq />
+  <Faq faqs={faqs} /> <!-- Pass static FAQs to the component -->
   <GetInTouch />
 </Layout>
