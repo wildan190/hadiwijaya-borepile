@@ -110,11 +110,14 @@ const mainImage = (product?.images?.length > 0) ? product.images[0].src : '/asse
             </div>
           </div>
 
-          {product.description && (
-            <section class="product-full-description">
-              <div class="wysiwyg-content" set:html={product.description}></div>
-            </section>
-          )}
+        {product.description && (
+        <section class="product-full-description">
+        <div 
+        class="wysiwyg-content [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg" 
+        set:html={product.description} 
+        />
+        </section>
+        )}
 
         </main>
       </div>
