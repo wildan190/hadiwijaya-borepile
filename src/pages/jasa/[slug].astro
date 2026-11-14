@@ -78,6 +78,7 @@ const mainImage = (product?.images?.length > 0) ? product.images[0].src : '/asse
                   <span itemprop="name">Jasa</span>
                 </a>
                 <meta itemprop="position" content="2" />
+                <meta itemprop="position" content="2" />
                 <span style="margin: 0 0.5rem;">/</span>
               </li>
               <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display: flex; align-items: center;">
@@ -112,10 +113,10 @@ const mainImage = (product?.images?.length > 0) ? product.images[0].src : '/asse
 
         {product.description && (
         <section class="product-full-description">
-        <div 
-        class="wysiwyg-content [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg" 
-        set:html={product.description} 
-        />
+          <div 
+            class="wysiwyg-content" 
+            set:html={product.description} 
+          />
         </section>
         )}
 
@@ -132,33 +133,50 @@ const mainImage = (product?.images?.length > 0) ? product.images[0].src : '/asse
   
 </Layout>
 <style>
-  .product-page-content { background-color: #fff; padding-bottom: 3rem; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  .product-page-content { background-color: #fff; padding-bottom: 3rem; width: 100%; overflow-x: hidden; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; width: 100%; box-sizing: border-box; }
   nav[itemprop="breadcrumb"] { padding: 1.5rem 0; font-size: 0.9rem; color: #666; }
   nav[itemprop="breadcrumb"] a { color: var(--primary-color); text-decoration: none; }
   nav[itemprop="breadcrumb"] a:hover { text-decoration: underline; }
-  .product-layout-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+  .product-layout-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; width: 100%; }
   @media (min-width: 768px) { .product-layout-grid { grid-template-columns: 4fr 5fr; gap: 3rem; } }
   .main-product-image { width: 100%; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); aspect-ratio: 1 / 1; object-fit: cover; }
-  .product-info-container { padding-top: 1rem; }
-  .product-title-in-page { font-size: 2.2rem; font-weight: 700; color: var(--secondary-color); line-height: 1.2; margin: 0 0 1rem; }
+  .product-info-container { padding-top: 1rem; width: 100%; }
+  .product-title-in-page { font-size: 2.2rem; font-weight: 700; color: var(--secondary-color); line-height: 1.2; margin: 0 0 1rem; word-break: break-word; }
   .product-price { font-size: 1.8rem; font-weight: 600; color: var(--primary-color); margin-bottom: 1.5rem; }
-  .product-short-description { font-size: 1.05rem; line-height: 1.7; color: #555; margin-bottom: 2rem; }
+  .product-short-description { font-size: 1.05rem; line-height: 1.7; color: #555; margin-bottom: 2rem; word-break: break-word; }
   .btn { display: inline-block; padding: 0.75rem 1.5rem; border: 1px solid transparent; border-radius: 8px; text-align: center; text-decoration: none; font-weight: 600; transition: all 0.2s ease; cursor: pointer; }
   .btn-primary { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
   .btn-primary:hover { background-color: var(--secondary-color); border-color: var(--secondary-color); }
   .book-now-btn { width: 100%; max-width: 300px; padding: 1rem; font-size: 1.1rem; }
+  
   .product-full-description { 
     margin-top: 4rem; 
     padding-top: 2rem; 
     border-top: 1px solid #eee; 
     width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
   }
-  .product-full-description img {
+
+  .wysiwyg-content {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    word-break: break-word;
+    box-sizing: border-box;
+  }
+
+  :global(.product-full-description img),
+  :global(.wysiwyg-content img) {
     max-width: 100% !important;
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
     object-fit: contain;
     display: block;
@@ -166,17 +184,23 @@ const mainImage = (product?.images?.length > 0) ? product.images[0].src : '/asse
     border-radius: 8px;
     box-sizing: border-box;
   }
-  .product-full-description figure {
+
+  :global(.product-full-description figure),
+  :global(.wysiwyg-content figure) {
     max-width: 100% !important;
+    width: 100% !important;
     margin: 1.5rem 0;
     box-sizing: border-box;
   }
-  .product-full-description iframe,
-  .product-full-description video {
+
+  :global(.product-full-description iframe),
+  :global(.product-full-description video),
+  :global(.wysiwyg-content iframe),
+  :global(.wysiwyg-content video) {
     max-width: 100% !important;
+    width: 100% !important;
     height: auto !important;
   }
 
   .not-found { text-align: center; padding: 4rem 1rem; }
-
 </style>
